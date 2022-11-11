@@ -1,6 +1,6 @@
 # Piedra Papel o Tijera - Rock Paper and Scissors
 
-## To run this console game you need:
+To run this console game you need:
 
 ```sh
 cd game
