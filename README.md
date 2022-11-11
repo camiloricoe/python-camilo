@@ -1,4 +1,4 @@
-#Python code notes
+# Python code notes
 
 My name is Camilo Rico and I decide to share my python notes with you.
 
