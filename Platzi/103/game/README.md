@@ -2,10 +2,10 @@
 
 ## To run this console game you need:
 
-'''sh
+```sh
 cd game
 python3 main.py
-'''
+```
 
 
 
