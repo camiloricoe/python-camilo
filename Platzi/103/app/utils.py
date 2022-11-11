@@ -1,5 +1,8 @@
-def info_by_country(data,country):
-    result = list(filter(lambda item: item['Country']== country,data))
+#import pandas as pd
+
+def info_by_country(df,country):
+    #result = list(filter(lambda item: item['Country']== country,data))
+    result = df[df['Country'] == country]
     return result
 
 def get_population(country_dict):
