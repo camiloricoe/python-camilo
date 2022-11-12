@@ -9,7 +9,7 @@ def generate_bar_char(countryname, labels, values):
 def generate_pie_char(labels, values):
   fig,ax = plt.subplots()
   ax.pie(values,labels=labels)
-  plt.savefig('pie.png')
+  plt.savefig('chart_pie.png')
   plt.close()
 
 if __name__ == '__main__':
