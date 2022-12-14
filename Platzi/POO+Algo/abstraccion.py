@@ -31,3 +31,4 @@ class Lavadora:
 if __name__ == '__main__':
     lavadora = Lavadora()
     lavadora.lavar()  # Ejecutamos el método publico de nuestra instancia.
+    lavadora._llenar_tanque_de_agua("fria") #por convencion es prvado pero igual se puede acceder

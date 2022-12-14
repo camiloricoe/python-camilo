@@ -10,6 +10,16 @@ class Coordenada:
 
         return (x_diff + y_diff)**0.5
 
+class Persona:
+
+    def __init__(self,nombre,edad,banco):
+        self.nombre = nombre
+        self.edad = edad
+        self.banco= banco
+
+    def saluda(self):
+        print("Hola mi nombre es",self.nombre)  
+
 
 if __name__ == '__main__':
     coord_1 = Coordenada(3, 30)
@@ -20,3 +30,9 @@ if __name__ == '__main__':
     # Para ver si una variable es una instancia de una clase
     # podemos verificar con isinstance
     print(isinstance(coord_2, Coordenada))
+
+    camilo = Persona("Camilo", 20, "NU")
+    camilo.saluda()
+
+
+
