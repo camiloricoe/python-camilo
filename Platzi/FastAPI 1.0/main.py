@@ -57,7 +57,9 @@ movies = [
 
 @app.post('/login', tags=['Auth'])
 def login(user: User):
-    return user
+    if user.email =="correo@dominio.com" and user.password =="1234":
+        token: str = create_token(user.dict())
+    return JSONResponse(content=token, status_code=200)
 
 
 
