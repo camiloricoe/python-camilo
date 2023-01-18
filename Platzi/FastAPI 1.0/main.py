@@ -161,30 +161,29 @@ def delete_movie(id:int):
 #     raise HTTPException(status_code=404, detail="Movie not found")
 
 
+
 # JSONResponse
-@app.get('/moviesJSON', tags=['movies'], response_model=List[Movie])
+@app.get('/moviesJSON', tags=['movies'], response_model=List[Movie], status_code=200)
 def get_movies() -> List[Movie]:
-    return JSONResponse(content=movies)
+    return JSONResponse(content=movies, status_code=200)
 
 
-@app.get('/moviesJSON/{id}', tags=['movies'], response_model=Movie)
+@app.get('/moviesJSON/{id}', tags=['movies'], response_model=Movie, status_code=200)
 def get_movie(id: int = Path(ge=1, le=10000)) -> Movie:
     for movie in movies:
         if movie['id'] == id:
-            return JSONResponse(content=movie)
-    return JSONResponse(content=[])
+            return JSONResponse(status_code=200, content=movie)
+    return JSONResponse(status_code=404, content=[])
 
 # parametros Query ... clave y valor
-
-
 @app.get('/moviesJSON/', tags=['movies'])
-def get_movies_by_category(category: str = Query(min_length=5, max_length=15)):
+def get_movies_by_category(category: str = Query(min_length=5, max_length=15),status_code = 200):
     data = [movie for movie in movies if movie['category'] == category]
-    return JSONResponse(content=data)
+    return JSONResponse(status_code=200, content=data)
 
 
-@app.post('/moviesJSON', tags=['movies'], response_model=dict)
-#def create_movie(movie: Movie): #funciona igual
+@app.post('/moviesJSON', tags=['movies'], response_model=dict, status_code=201)
+# def create_movie(movie: Movie): #funciona igual
 def create_movie(movie: Movie) -> dict:
     movies.append(movie)
-    return JSONResponse(content={"message": "Se ha registrado la pelicula"})
+    return JSONResponse(status_code=201, content={"message": "Se ha registrado la pelicula"})
