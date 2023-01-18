@@ -2,30 +2,15 @@ from fastapi import FastAPI, Body, Path, Query
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 from typing import Optional, List
+from jwt_manager import create_token
 
 app = FastAPI()
 app.title = "Mi aplicacion con FastAPI"
 app.version ="0.0.1"
 
-movies = [
-    {
-        'id': 1,
-        'title': 'Avatar',
-        'overview': "En un exuberante planeta llamado Pandora viven los Na'vi, seres que ...",
-        'year': '2009',
-        'rating': 7.8,
-        'category': 'Acción'
-    },
-    {
-        'id': 2,
-        'title': 'Avatar',
-        'overview': "En un exuberante planeta llamado Pandora viven los Na'vi, seres que ...",
-        'year': '2009',
-        'rating': 7.8,
-        'category': 'Acción'
-    }
-]
-
+class User(BaseModel):
+    email:str
+    password:str
 
 #esquemas con pydantic
 class Movie(BaseModel):
@@ -48,6 +33,33 @@ class Movie(BaseModel):
                 "category": "Drama",
             }
         }
+
+
+movies = [
+    {
+        'id': 1,
+        'title': 'Avatar',
+        'overview': "En un exuberante planeta llamado Pandora viven los Na'vi, seres que ...",
+        'year': '2009',
+        'rating': 7.8,
+        'category': 'Acción'
+    },
+    {
+        'id': 2,
+        'title': 'Avatar',
+        'overview': "En un exuberante planeta llamado Pandora viven los Na'vi, seres que ...",
+        'year': '2009',
+        'rating': 7.8,
+        'category': 'Acción'
+    }
+]
+
+
+@app.post('/login', tags=['Auth'])
+def login(user: User):
+    return user
+
+
 
 
 #metodo get
@@ -164,12 +176,12 @@ def delete_movie(id:int):
 
 # JSONResponse
 @app.get('/moviesJSON', tags=['movies'], response_model=List[Movie], status_code=200)
-def get_movies() -> List[Movie]:
+def get_movies2() -> List[Movie]:
     return JSONResponse(content=movies, status_code=200)
 
 
 @app.get('/moviesJSON/{id}', tags=['movies'], response_model=Movie, status_code=200)
-def get_movie(id: int = Path(ge=1, le=10000)) -> Movie:
+def get_movie2(id: int = Path(ge=1, le=10000)) -> Movie:
     for movie in movies:
         if movie['id'] == id:
             return JSONResponse(status_code=200, content=movie)
@@ -177,13 +189,13 @@ def get_movie(id: int = Path(ge=1, le=10000)) -> Movie:
 
 # parametros Query ... clave y valor
 @app.get('/moviesJSON/', tags=['movies'])
-def get_movies_by_category(category: str = Query(min_length=5, max_length=15),status_code = 200):
+def get_movies_by_category2(category: str = Query(min_length=5, max_length=15),status_code = 200):
     data = [movie for movie in movies if movie['category'] == category]
     return JSONResponse(status_code=200, content=data)
 
 
 @app.post('/moviesJSON', tags=['movies'], response_model=dict, status_code=201)
 # def create_movie(movie: Movie): #funciona igual
-def create_movie(movie: Movie) -> dict:
+def create_movie2(movie: Movie) -> dict:
     movies.append(movie)
     return JSONResponse(status_code=201, content={"message": "Se ha registrado la pelicula"})
