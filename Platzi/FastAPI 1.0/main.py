@@ -79,8 +79,8 @@ def login(user: User):
 @app.get('/movies', tags=['movies'], response_model=List[Movie], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_movies() -> List[Movie]:
     db=Session()
-    db.query()
-    return JSONResponse(status_code=200,content=movies )
+    result=db.query(MovieModel).all()
+    return JSONResponse(status_code=200,content=result)
 
 
 @app.get('/movies/{id}', tags=['movies'], response_model=Movie, status_code=200)
