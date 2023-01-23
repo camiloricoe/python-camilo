@@ -86,10 +86,13 @@ def get_movies() -> List[Movie]:
 
 @app.get('/movies/{id}', tags=['movies'], response_model=Movie, status_code=200)
 def get_movie(id: int = Path(ge=1, le=10000)) -> Movie:
-    for movie in movies:
-        if movie['id'] == id:
-            return JSONResponse(status_code=200, content=movie)
-    return JSONResponse(status_code=404, content=[])
+    db = Session()
+    result = db.query(MovieModel).filter(MovieModel.id == id).first()
+    if not result:
+            return JSONResponse(status_code=404, content=[])
+
+    return JSONResponse(status_code=200, content=jsonable_encoder(result))
+    
 
 # parametros Query ... clave y valor
 @app.get('/movies/', tags=['movies'])
