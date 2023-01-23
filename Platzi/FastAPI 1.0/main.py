@@ -113,21 +113,28 @@ def create_movie(movie: Movie) -> dict:
 # put con el esquema
 @app.put('/movies/{id}', tags=['movies'])
 def update_movie(id: int, movie: Movie):
-    for item in movies:
-        if item['id']==id:
-            item['title'] = movie.title
-            item['overview'] = movie.overview
-            item['year'] = movie.year
-            item['rating'] = movie.rating
-            item['category'] = movie.category
-            return movies
-    raise HTTPException(status_code=404, detail="Movie not found")
+    db = Session()
+    result = db.query(MovieModel).filter(MovieModel.id == id).first()
+    if not result:
+            return JSONResponse(status_code=404, content={'message': 'Movie not found'})
+    result.title=movie.title
+    result.overview=movie.overview
+    result.year =movie.year
+    result.rating =movie.rating
+    result.category =movie.category
+    db.commit()
+    return JSONResponse(status_code=200, content={'message': f'Se ha actualizado la pelicula con el id {id}'})
+
         
 #delete
 @app.delete('/movies/{id}', tags=['movies'])
 def delete_movie(id:int):
-    for movie in movies:
-        if movie['id']==id:
-            movies.remove(movie)
-            return {'status': 'deleted movie'}
-    raise HTTPException(status_code=404, detail="Movie not found")
+    db = Session()
+    result = db.query(MovieModel).filter(MovieModel.id == id).first()
+    if not result:
+            return JSONResponse(status_code=404, content={'message': 'Movie not found'})
+    db.delete(result)
+    db.commit()
+    return JSONResponse(status_code=200, content={'message': f'Se ha eliminado la pelicula con el id {id}'})
+    
+    
