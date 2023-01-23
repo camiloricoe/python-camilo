@@ -88,7 +88,7 @@ def get_movie(id: int = Path(ge=1, le=10000)) -> Movie:
     db = Session()
     result = db.query(MovieModel).filter(MovieModel.id == id).first()
     if not result:
-            return JSONResponse(status_code=404, content=[])
+            return JSONResponse(status_code=404, content={'message': 'Movie not found'})
 
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
     
