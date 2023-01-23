@@ -92,12 +92,14 @@ def get_movie(id: int = Path(ge=1, le=10000)) -> Movie:
 
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
     
-
 # parametros Query ... clave y valor
 @app.get('/movies/', tags=['movies'])
-def get_movies_by_category(category: str = Query(min_length=5, max_length=15),status_code = 200):
-    data = [movie for movie in movies if movie['category'] == category]
-    return JSONResponse(status_code=200, content=data)
+def get_movies_by_category(category: str = Query(min_length=5, max_length=15)):
+    db = Session()
+    result = db.query(MovieModel).filter(MovieModel.category == category).all()
+    if not result:
+        return JSONResponse(status_code=400, content={'message': 'Movies in category not found'})
+    return JSONResponse(status_code=200, content=jsonable_encoder(result))
 
 @app.post('/movies', tags=['movies'], response_model=dict, status_code=201)
 # def create_movie(movie: Movie): #funciona igual
