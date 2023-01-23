@@ -40,7 +40,6 @@ class Movie(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "id": 9999,
                 "title": "The Shawshank Redemption",
                 "overview": "Two imprisoned",
                 "year": 1994,
