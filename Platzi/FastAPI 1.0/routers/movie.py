@@ -43,7 +43,7 @@ def get_movies() -> List[Movie]:
 @movie_router.get('/movies/{id}', tags=['Movies'], response_model=Movie, status_code=200)
 def get_movie(id: int = Path(ge=1, le=10000)) -> Movie:
     db = Session()
-    result = db.query(MovieModel).filter(MovieModel.id == id).first()
+    result = MovieService(db).get_movie(id)
     if not result:
             return JSONResponse(status_code=404, content={'message': 'Movie not found'})
 
