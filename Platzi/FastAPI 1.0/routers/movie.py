@@ -53,7 +53,7 @@ def get_movie(id: int = Path(ge=1, le=10000)) -> Movie:
 @movie_router.get('/movies/', tags=['Movies'])
 def get_movies_by_category(category: str = Query(min_length=5, max_length=15)):
     db = Session()
-    result = db.query(MovieModel).filter(MovieModel.category == category).all()
+    result = MovieService(db).get_movies_by_category(category)
     if not result:
         return JSONResponse(status_code=400, content={'message': 'Movies in category not found'})
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
