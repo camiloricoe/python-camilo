@@ -1,9 +1,8 @@
-from fastapi import FastAPI, Body, Path, Query, Request, HTTPException, Depends
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import FastAPI, Path, Query, Depends
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from typing import Optional, List
-from jwt_manager import create_token, validate_token
-from fastapi.security import HTTPBearer
+from jwt_manager import create_token
 from config.database import Session, Base, engine
 from models.movie import Movie as MovieModel
 from fastapi.encoders import jsonable_encoder
@@ -16,14 +15,6 @@ app.add_middleware(ErrorHandler)
 
 Base.metadata.create_all(bind=engine)
 
-
-class JWTBearer(HTTPBearer):
-    async def __call__(self, request: Request):
-        auth= await super().__call__(request)
-        data= validate_token(auth.credentials)
-        if data['email']!= "correo@dominio.com":
-            raise HTTPException(status_code=403, detail="invalid Credemtials")
-    
 
 class User(BaseModel):
     email:str = Field(default="correo@dominio.com")
