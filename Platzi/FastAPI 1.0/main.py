@@ -7,6 +7,7 @@ from config.database import Session, Base, engine
 from models.movie import Movie as MovieModel
 from fastapi.encoders import jsonable_encoder
 from middlewares.error_handler import ErrorHandler
+from middlewares.jwt_bearer import JWTBearer
 
 app = FastAPI()
 app.title = "Mi aplicacion con FastAPI"
