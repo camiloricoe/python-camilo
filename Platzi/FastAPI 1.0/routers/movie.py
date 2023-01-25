@@ -63,8 +63,7 @@ def delete_movie(id:int):
     result = MovieService(db).get_movie(id)
     if not result:
             return JSONResponse(status_code=404, content={'message': 'Movie not found'})
-    db.delete(result)
-    db.commit()
+    MovieService(db).delete_movie(id)
     return JSONResponse(status_code=200, content={'message': f'Se ha eliminado la pelicula con el id {id}'})
     
     
