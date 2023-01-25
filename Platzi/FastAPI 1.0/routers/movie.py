@@ -49,15 +49,10 @@ def create_movie(movie: Movie) -> dict:
 @movie_router.put('/movies/{id}', tags=['Movies'])
 def update_movie(id: int, movie: Movie):
     db = Session()
-    result = db.query(MovieModel).filter(MovieModel.id == id).first()
+    result = MovieService(db).get_movie(id)
     if not result:
             return JSONResponse(status_code=404, content={'message': 'Movie not found'})
-    result.title=movie.title
-    result.overview=movie.overview
-    result.year =movie.year
-    result.rating =movie.rating
-    result.category =movie.category
-    db.commit()
+    MovieService(db).update_movie(id,movie)
     return JSONResponse(status_code=200, content={'message': f'Se ha actualizado la pelicula con el id {id}'})
 
         
@@ -65,7 +60,7 @@ def update_movie(id: int, movie: Movie):
 @movie_router.delete('/movies/{id}', tags=['Movies'])
 def delete_movie(id:int):
     db = Session()
-    result = db.query(MovieModel).filter(MovieModel.id == id).first()
+    result = MovieService(db).get_movie(id)
     if not result:
             return JSONResponse(status_code=404, content={'message': 'Movie not found'})
     db.delete(result)
