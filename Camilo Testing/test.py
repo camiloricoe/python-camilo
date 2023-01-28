@@ -1,3 +1,3 @@
 #Trivia
-for i in range(16,31):
+for i in range(31,46):
     print(str(i)+".")
